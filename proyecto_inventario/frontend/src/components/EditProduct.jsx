@@ -140,10 +140,28 @@ function EditProduct({
 
         } catch (error) {
 
+            console.log(error);
+
+            // VALIDAR CODIGO DUPLICADO
+            if (
+                error.message === "Código duplicado"
+            ) {
+
+                Swal.fire({
+                    icon: "warning",
+                    title: "Código duplicado",
+                    text: "No se puede repetir el código",
+                    confirmButtonColor: "#2563eb",
+                });
+
+                return;
+            }
+
             Swal.fire({
                 icon: "error",
                 title: "Error",
                 text: "No se pudo actualizar el producto",
+                confirmButtonColor: "#2563eb",
             });
         }
     };
@@ -164,8 +182,11 @@ function EditProduct({
 
                 <input
                     type="text"
+                    placeholder="Ingrese el Código"
                     value={codigo}
-                    disabled
+                    onChange={(e) =>
+                        setCodigo(e.target.value)
+                    }
                 />
             </div>
 

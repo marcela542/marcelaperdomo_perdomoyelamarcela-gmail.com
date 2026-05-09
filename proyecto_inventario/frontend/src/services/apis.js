@@ -64,8 +64,14 @@ export const updateProduct = async (product) => {
         body: JSON.stringify(product),
     });
 
+    // LEER RESPUESTA JSON
+    const data = await response.json();
+
+    // SI HAY ERROR
     if (!response.ok) {
-        throw new Error("Error al actualizar producto");
+
+        // ENVIAR MENSAJE REAL DEL BACKEND
+        throw data;
     }
 
     return await response.json();
