@@ -1,0 +1,329 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #dbe7ff;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.app-bg {
+    min-height: 100vh;
+    background: linear-gradient(
+        135deg,
+        #9ab4eb,
+        #ebf0f5
+    );
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 12px;
+}
+
+/* CONTENEDOR GENERAL */
+.container {
+    width: 100%;
+    max-width: 1300px;
+    margin: auto;
+}
+
+/* TITULOS */
+h1 {
+    text-align: center;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+/* =========================
+    FORMULARIOS
+========================= */
+
+.form-container {
+    width: 100%;
+    max-width: 430px;
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.08);
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #2563eb;
+    margin-bottom: 22px;
+    font-size: 28px;
+    line-height: 1.1;
+}
+
+/* GRUPO INPUT */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+.input-group label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-bottom: 6px;
+}
+
+.input-group label span {
+    color: red;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #2563eb;
+    box-shadow: 0px 0px 5px rgba(37,99,235,0.3);
+}
+
+/* BOTONES */
+.form-container button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+/* BOTON PRINCIPAL */
+.form-container button[type="submit"] {
+    background: #2563eb;
+    color: white;
+}
+
+.form-container button[type="submit"]:hover {
+    background: #1d4ed8;
+}
+
+/* BOTON SECUNDARIO */
+.btn-view {
+    background: #0f172a !important;
+    color: white;
+}
+
+.btn-view:hover {
+    background: #020617 !important;
+}
+
+/* =========================
+    BUSCADOR
+========================= */
+
+.search-box {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.search-box h3 {
+    margin-bottom: 15px;
+    color: #334155;
+}
+
+.search-input {
+    display: flex;
+    align-items: center;
+    background: #f1f5f9;
+    padding: 14px 16px;
+    border-radius: 12px;
+    gap: 10px;
+}
+
+.search-input input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+}
+
+/* =========================
+    BOTON AGREGAR
+========================= */
+.btn-add {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.btn-add:hover {
+    background: #1d4ed8;
+}
+
+/* =========================
+    TABLA
+========================= */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.08);
+}
+
+th {
+    background: #2563eb;
+    color: white;
+    padding: 18px;
+    text-align: center;
+}
+
+td {
+    padding: 18px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+tr:hover {
+    background: #f8fafc;
+}
+
+/* BANDERAS */
+td img {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+/* =========================
+    BOTONES CRUD
+========================= */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-edit, .btn-delete {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: white;
+    transition: 0.3s;
+}
+
+.btn-edit {
+    background: #f59e0b;
+}
+
+.btn-edit:hover {
+    background: #d97706;
+}
+
+.btn-delete {
+    background: #ef4444;
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+}
+
+/* =========================
+    LOADING
+========================= */
+.loading-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.loading-container h2 {
+    color: #1e293b;
+}
+
+.spinner {
+    width: 70px;
+    height: 70px;
+    border: 6px solid #dbeafe;
+    border-top: 6px solid #2563eb;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================
+    RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .form-container {
+        padding: 25px;
+    }
+
+    .form-container h2 {
+        font-size: 28px;
+    }
+
+    th,td {
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    .btn-edit,
+    .btn-delete {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+}
