@@ -125,6 +125,21 @@ function ProductForm({ setReload, setShowList }) {
 
         } catch (error) {
 
+            console.log(error);
+
+            // VALIDAR CÓDIGO DUPLICADO
+            if (error.message === "Código duplicado") {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Código duplicado",
+                    text: "No se puede registrar un código repetido",
+                    confirmButtonColor: "#2563eb",
+                });
+
+                return;
+            }
+
             Swal.fire({
                 icon: "error",
                 title: "Error",

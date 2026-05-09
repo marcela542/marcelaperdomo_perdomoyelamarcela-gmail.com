@@ -15,19 +15,25 @@ export const getProducts = async () => { //Esta función es asíncrona porque va
 
 //Crear PRODUCTO
 export const createProduct = async (product) => {
-    const response = await fetch("http://localhost/backend/api/createProduct.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(product)
-    });
+    const response = await fetch(
+        `${API_URL}/createProduct.php`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(product)
+        }
+    );
 
-    if (!response.ok) {
-        throw new Error("Error al crear producto");
-    }
-
+    // LEER RESPUESTA JSON
     const data = await response.json();
+
+    // SI HAY ERROR
+    if (!response.ok) {
+        // ENVIAR MENSAJE REAL DEL BACKEND
+        throw data;
+    }
     return data;
 };
 

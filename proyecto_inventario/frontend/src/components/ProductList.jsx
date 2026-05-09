@@ -156,7 +156,13 @@ function ProductList({ reload, setShowList, setProductToEdit}) {
                                 <tr key={product.id}>
                                     <td>{product.codigo}</td>
                                     <td>{product.nombre}</td>
-                                    <td>${product.precio}</td>
+                                    <td>
+                                        {Number(product.precio).toLocaleString("es-CO", {
+                                            style: "currency",
+                                            currency: "COP",
+                                            minimumFractionDigits: 0
+                                        })}
+                                    </td>
                                     <td>{product.stock}</td>
                                     <td>{product.pais_origen}</td>
 

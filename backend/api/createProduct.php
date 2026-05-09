@@ -48,10 +48,25 @@
 
     }else{
 
-        echo json_encode([
-            "success" => false,
-            "message" => "Error al crear producto"
-        ]);
+        // ERROR DE CODIGO DUPLICADO
+        if($conn->errno == 1062){
+
+            http_response_code(400); // BAD REQUEST porque el cliente envió un código que ya existe
+
+            echo json_encode([
+                "success" => false,
+                "message" => "Código duplicado"
+            ]);
+
+        }else{
+
+            http_response_code(500);
+
+            echo json_encode([
+                "success" => false,
+                "message" => "Error al crear producto"
+            ]);
+        }
     }
     /*
     - createProduct.php es una API para guardar producto: React enviará datos usando método POST, PHP recibe esos datos y PHP ejecuta INSERT INTO en MySQL. MySQL guarda el producto. PHP responde JSON y React leerá esa respuesta.

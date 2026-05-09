@@ -164,11 +164,8 @@ function EditProduct({
 
                 <input
                     type="text"
-                    placeholder="Ingrese el Código"
                     value={codigo}
-                    onChange={(e) =>
-                        setCodigo(e.target.value)
-                    }
+                    disabled
                 />
             </div>
 
