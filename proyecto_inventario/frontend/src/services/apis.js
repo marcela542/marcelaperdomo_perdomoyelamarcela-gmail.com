@@ -74,5 +74,7 @@ export const updateProduct = async (product) => {
         throw data;
     }
 
+    return data;
+
     return await response.json();
 };
