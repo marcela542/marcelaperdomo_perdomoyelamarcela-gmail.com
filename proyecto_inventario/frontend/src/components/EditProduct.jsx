@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { updateProduct } from "../services/apis";
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import {
+    faPen,
+    faXmark
+} from "@fortawesome/free-solid-svg-icons";
 
 function EditProduct({
     product,
     setProductToEdit,
-    setReload
+    setReload,
+    setShowList
 }) {
 
     const [codigo, setCodigo] = useState(product.codigo);
@@ -135,8 +142,11 @@ function EditProduct({
             // Recargar lista
             setReload(prev => !prev);
 
-            // Cerrar formulario
+            // cerrar edición
             setProductToEdit(null);
+
+            // volver al listado
+            setShowList(true);
 
         } catch (error) {
 
@@ -185,7 +195,7 @@ function EditProduct({
                     placeholder="Ingrese el Código"
                     value={codigo}
                     onChange={(e) =>
-                        setCodigo(e.target.value)
+                        setCodigo(e.target.value.toUpperCase())
                     }
                 />
             </div>
@@ -200,7 +210,7 @@ function EditProduct({
                     placeholder="Ingrese el Nombre"
                     value={nombre}
                     onChange={(e) =>
-                        setNombre(e.target.value)
+                        setNombre(e.target.value.toUpperCase())
                     }
                 />
             </div>
@@ -245,25 +255,31 @@ function EditProduct({
                     placeholder="Ingrese el País"
                     value={pais}
                     onChange={(e) =>
-                        setPais(e.target.value)
+                        setPais(e.target.value.toUpperCase())
                     }
                 />
             </div>
 
-            <button type="submit">
-                Guardar Cambios
-            </button>
+            <div className="edit-buttons">
 
-            <button
-                type="button"
-                className="btn-view"
-                onClick={() =>
-                    setProductToEdit(null)
-                }
-            >
-                Cancelar
-            </button>
+                <button type="submit" className="btn-update">
+                    <FontAwesomeIcon icon={faPen} />
+                    Guardar Cambios
+                </button>
 
+                <button
+                    type="button"
+                    className="btn-cancel"
+                    onClick={() => {
+                        setProductToEdit(null);
+                        setShowList(true);
+                    }}
+                >
+                    <FontAwesomeIcon icon={faXmark} />
+                    Cancelar
+                </button>
+
+            </div>
         </form>
     );
 }

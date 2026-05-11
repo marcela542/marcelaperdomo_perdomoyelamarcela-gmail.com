@@ -43,27 +43,27 @@
 
     } else {
 
-        // ERROR CODIGO DUPLICADO
-        if($conn->errno == 1062){
+    // ERROR CODIGO DUPLICADO
+    if($conn->errno == 1062){
 
-            http_response_code(400);
-            echo json_encode([
-                "success" => false,
-                "message" => "Código duplicado"
-            ]);
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" => "Código duplicado"
+        ]);
 
-        }else{
+    }else{
 
-            http_response_code(500);
+        http_response_code(500);
 
-            echo json_encode([
-                "success" => false,
-                "message" => "Error al actualizar producto"
-            ]);
-        }
+        echo json_encode([
+            "success" => false,
+            "message" => "Error al actualizar producto"
+        ]);
     }
+}
 
-    
+
     /*
     NOTA:
     - updateProduct.php sirve para editar productos.

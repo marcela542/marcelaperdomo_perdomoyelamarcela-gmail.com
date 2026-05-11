@@ -19,6 +19,7 @@ function App() {
                         product={productToEdit}
                         setProductToEdit={setProductToEdit}
                         setReload={setReload}
+                        setShowList={setShowList}
                     />
                 ) : showList ? (
                     <ProductList

@@ -93,7 +93,12 @@ function ProductList({ reload, setShowList, setProductToEdit}) {
 
     // EDITAR PRODUCTO
     const handleEdit = (product) => {
+
+        // guardar producto seleccionado
         setProductToEdit(product);
+
+        // cambiar a vista formulario
+        setShowList(false);
     };
 
     // FILTRAR PRODUCTOS
@@ -107,6 +112,39 @@ function ProductList({ reload, setShowList, setProductToEdit}) {
             .includes(search.toLowerCase())
     );
 
+    /* =========================
+    PAGINACIÓN
+    ========================= */
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const productsPerPage = 5;
+
+    const indexOfLastProduct =
+        currentPage * productsPerPage;
+
+    const indexOfFirstProduct =
+        indexOfLastProduct - productsPerPage;
+
+    const currentProducts =
+        filteredProducts.slice(
+            indexOfFirstProduct,
+            indexOfLastProduct
+        );
+
+    const totalPages = Math.ceil(
+        filteredProducts.length / productsPerPage
+    );
+
+    // CONTROLAR PAGINACION DESPUES DEL FILTRO
+    useEffect(() => {
+
+        if (currentPage > totalPages && totalPages > 0) {
+            setCurrentPage(totalPages);
+        }
+
+    }, [filteredProducts]);
+
     // RENDERIZAR PRODUCTOS
     if (loading) {
         return (
@@ -119,15 +157,51 @@ function ProductList({ reload, setShowList, setProductToEdit}) {
 
     return (
         <div className="container">
-            <div className="search-box">
-                <h1>LISTA DE PRODUCTOS</h1>
-                <h3>Filtrar por código o nombre</h3>
-                <div className="search-input"><FontAwesomeIcon icon={faSearch}/>
-                    <input type="text" placeholder="Buscar producto..." value={search} onChange={(e) => setSearch(e.target.value)}/>
+            <div className="top-bar">
+                <div className="top-info">
+                    <h1>LISTA DE PRODUCTOS</h1>
+                    <p>Administra, busca y edita los productos registrados en el sistema.</p>
                 </div>
-            </div> 
-                
-            <button className="btn-add" onClick={() => setShowList(false)}><FontAwesomeIcon icon={faPlus} />Registrar Producto</button>
+
+                <button
+                    className="btn-add"
+                    onClick={() => setShowList(false)}
+                >
+                    <FontAwesomeIcon icon={faPlus} />
+                    Registrar Producto
+                </button>
+            </div>
+
+            <div className="search-box">
+
+                <div className="search-header">
+
+                    <div>
+                        <h3>Buscar Productos</h3>
+
+                        <span>
+                            Filtra por código o nombre
+                        </span>
+                    </div>
+
+                </div>
+
+                <div className="search-input">
+
+                    <FontAwesomeIcon icon={faSearch}/>
+                    <input
+                        type="text"
+                        placeholder="Buscar producto..."
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+
+                            // VOLVER A PAGINA 1
+                            setCurrentPage(1);
+                        }}
+                    />
+                </div>
+            </div>
 
             <div className="table-container">
                 <table>
@@ -152,7 +226,7 @@ function ProductList({ reload, setShowList, setProductToEdit}) {
                             </tr>
 
                         ) : (
-                            filteredProducts.map((product) => (
+                            currentProducts.map((product) => (
                                 <tr key={product.id}>
                                     <td>{product.codigo}</td>
                                     <td>{product.nombre}</td>
@@ -184,6 +258,35 @@ function ProductList({ reload, setShowList, setProductToEdit}) {
                         )}
                     </tbody>
                 </table>
+                <div className="pagination">
+
+                    <button
+                        onClick={() =>
+                            setCurrentPage((prev) =>
+                                Math.max(prev - 1, 1)
+                            )
+                        }
+                        disabled={currentPage === 1}
+                    >
+                        ← Anterior
+                    </button>
+
+                    <span>
+                        Página {currentPage} de {totalPages}
+                    </span>
+
+                    <button
+                        onClick={() =>
+                            setCurrentPage((prev) =>
+                                Math.min(prev + 1, totalPages)
+                            )
+                        }
+                        disabled={currentPage === totalPages}
+                    >
+                        Siguiente →
+                    </button>
+
+                </div>
             </div>
         </div>
     );

@@ -15,6 +15,7 @@ export const getProducts = async () => { //Esta función es asíncrona porque va
 
 //Crear PRODUCTO
 export const createProduct = async (product) => {
+
     const response = await fetch(
         `${API_URL}/createProduct.php`,
         {
@@ -31,9 +32,11 @@ export const createProduct = async (product) => {
 
     // SI HAY ERROR
     if (!response.ok) {
+
         // ENVIAR MENSAJE REAL DEL BACKEND
         throw data;
     }
+
     return data;
 };
 
@@ -75,6 +78,4 @@ export const updateProduct = async (product) => {
     }
 
     return data;
-
-    return await response.json();
 };

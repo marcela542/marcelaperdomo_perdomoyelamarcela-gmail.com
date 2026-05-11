@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { createProduct } from "../services/apis";
 import Swal from "sweetalert2";
+import {
+    faFloppyDisk,
+    faTableList
+} from "@fortawesome/free-solid-svg-icons";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 function ProductForm({ setReload, setShowList }) {
 
@@ -11,13 +18,15 @@ function ProductForm({ setReload, setShowList }) {
     const [stock, setStock] = useState("");
     const [pais, setPais] = useState("");
 
+    // ESTADO DE ERRORES
+    const [errors, setErrors] = useState({});
+
+    // ESTADO DE CARGA
+    const [loading, setLoading] = useState(false);
+
     // VALIDACIONES
     const regexCodigo = /^[a-zA-Z0-9-]+$/;
-
-    // Permite letras, números, espacios y guiones
     const regexNombre = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s-]+$/;
-
-    // Solo letras y espacios
     const regexPais = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 
     // ENVIAR FORMULARIO
@@ -25,16 +34,35 @@ function ProductForm({ setReload, setShowList }) {
 
         e.preventDefault();
 
+        // LIMPIAR ERRORES
+        setErrors({});
+
         // CAMPOS OBLIGATORIOS
-        if (!codigo || !nombre || !precio || !stock || !pais) {
+        const newErrors = {};
 
-            Swal.fire({
-                icon: "warning",
-                title: "Campos obligatorios",
-                text: "Debes completar todos los campos",
-                confirmButtonColor: "#2563eb",
-            });
+        if (!codigo.trim()) {
+            newErrors.codigo = "El código es obligatorio";
+        }
 
+        if (!nombre.trim()) {
+            newErrors.nombre = "El nombre es obligatorio";
+        }
+
+        if (!precio) {
+            newErrors.precio = "El precio es obligatorio";
+        }
+
+        if (!stock) {
+            newErrors.stock = "El stock es obligatorio";
+        }
+
+        if (!pais.trim()) {
+            newErrors.pais = "El país es obligatorio";
+        }
+
+        // MOSTRAR ERRORES
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
             return;
         }
 
@@ -83,7 +111,7 @@ function ProductForm({ setReload, setShowList }) {
             Swal.fire({
                 icon: "error",
                 title: "País inválido",
-                text: "No se permiten símbolos extraños",
+                text: "Solo se permiten letras",
                 confirmButtonColor: "#2563eb",
             });
 
@@ -101,6 +129,9 @@ function ProductForm({ setReload, setShowList }) {
 
         try {
 
+            // ACTIVAR LOADING
+            setLoading(true);
+
             // GUARDAR PRODUCTO
             const response = await createProduct(product);
 
@@ -113,6 +144,9 @@ function ProductForm({ setReload, setShowList }) {
                 setShowList(true);
             });
 
+            // RECARGAR LISTA
+            setReload(prev => !prev);
+
             // LIMPIAR FORMULARIO
             setCodigo("");
             setNombre("");
@@ -120,8 +154,8 @@ function ProductForm({ setReload, setShowList }) {
             setStock("");
             setPais("");
 
-            // RECARGAR LISTA
-            setReload(prev => !prev);
+            // LIMPIAR ERRORES
+            setErrors({});
 
         } catch (error) {
 
@@ -146,99 +180,202 @@ function ProductForm({ setReload, setShowList }) {
                 text: "No se pudo registrar el producto",
                 confirmButtonColor: "#2563eb",
             });
+
+        } finally {
+
+            // DESACTIVAR LOADING
+            setLoading(false);
         }
     };
 
     return (
 
-        <form className="form-container" onSubmit={handleSubmit}>
+        <form
+            className="form-container"
+            onSubmit={handleSubmit}
+            autoComplete="off"
+        >
 
-            <h2>REGISTRAR PRODUCTOS</h2>
+            <div className="form-header">
+
+                <h2>
+                    Registrar Productos
+                </h2>
+
+                <p className="form-description">
+                    Complete la información para registrar un nuevo producto en el sistema.
+                </p>
+
+            </div>
 
             {/* CÓDIGO */}
             <div className="input-group">
+
                 <label>
                     Código <span>*</span>
                 </label>
 
                 <input
                     type="text"
-                    placeholder="Ingrese el Código"
+                    placeholder="Ej: PROD-001"
                     value={codigo}
-                    onChange={(e) => setCodigo(e.target.value)}
+                    maxLength={20}
+                    onChange={(e) => {
+                        setCodigo(e.target.value.toUpperCase());
+                        setErrors({ ...errors, codigo: "" });
+                    }}
                 />
+
+                {
+                    errors.codigo &&
+                    <p className="error-text">
+                        {errors.codigo}
+                    </p>
+                }
+
             </div>
 
             {/* NOMBRE */}
             <div className="input-group">
+
                 <label>
                     Nombre <span>*</span>
                 </label>
 
                 <input
                     type="text"
-                    placeholder="Ingrese el Nombre"
+                    placeholder="Ingrese el nombre del producto"
                     value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
+                    maxLength={80}
+                    onChange={(e) => {
+                        setNombre(e.target.value.toUpperCase());
+                        setErrors({ ...errors, nombre: "" });
+                    }}
                 />
+
+                {
+                    errors.nombre &&
+                    <p className="error-text">
+                        {errors.nombre}
+                    </p>
+                }
+
             </div>
 
             {/* PRECIO */}
             <div className="input-group">
+
                 <label>
                     Precio <span>*</span>
                 </label>
 
                 <input
                     type="number"
-                    placeholder="Ingrese el Precio"
+                    placeholder="Ingrese el precio"
                     value={precio}
-                    onChange={(e) => setPrecio(e.target.value)}
+                    min="1"
+                    onChange={(e) => {
+                        setPrecio(e.target.value);
+                        setErrors({ ...errors, precio: "" });
+                    }}
                 />
+
+                {
+                    errors.precio &&
+                    <p className="error-text">
+                        {errors.precio}
+                    </p>
+                }
+
             </div>
 
             {/* STOCK */}
             <div className="input-group">
+
                 <label>
-                    Stock <span>*</span>
+                    Existencias <span>*</span>
                 </label>
 
                 <input
                     type="number"
-                    placeholder="Ingrese el Stock"
+                    placeholder="Ingrese la cantidad"
                     value={stock}
-                    onChange={(e) => setStock(e.target.value)}
+                    min="1"
+                    onChange={(e) => {
+                        setStock(e.target.value);
+                        setErrors({ ...errors, stock: "" });
+                    }}
                 />
+
+                {
+                    errors.stock &&
+                    <p className="error-text">
+                        {errors.stock}
+                    </p>
+                }
+
             </div>
 
             {/* PAÍS */}
             <div className="input-group">
+
                 <label>
                     País de Origen <span>*</span>
                 </label>
 
                 <input
                     type="text"
-                    placeholder="Ingrese el País de origen"
+                    placeholder="Ingrese el país de origen"
                     value={pais}
-                    onChange={(e) => setPais(e.target.value)}
+                    maxLength={40}
+                    onChange={(e) => {
+                        setPais(e.target.value.toUpperCase());
+                        setErrors({ ...errors, pais: "" });
+                    }}
                 />
+
+                {
+                    errors.pais &&
+                    <p className="error-text">
+                        {errors.pais}
+                    </p>
+                }
+
             </div>
 
-            <button type="submit">
-                Guardar Producto
-            </button>
+            {/* BOTÓN GUARDAR */}
+            <div className="button-group">
 
-            <button
-                type="button"
-                className="btn-view"
-                onClick={() => setShowList(true)}
-            >
-                Ver Listado
-            </button>
+                <button
+                    type="submit"
+                    className="btn-save"
+                    disabled={loading}
+                >
 
+                    <FontAwesomeIcon icon={faFloppyDisk} />
+
+                    {
+                        loading
+                            ? "Guardando..."
+                            : "Guardar Registro"
+                    }
+
+                </button>
+
+                <button
+                    type="button"
+                    className="btn-view"
+                    onClick={() => setShowList(true)}
+                >
+
+                    <FontAwesomeIcon icon={faTableList} />
+
+                    Ver Listado
+
+                </button>
+
+            </div>
         </form>
     );
 }
-
 export default ProductForm;
